@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 
 app = Flask(__name__)
 
@@ -25,6 +25,14 @@ def create_lesson():
     new_lesson = {"id": lesson_id, "name": name, "credits": credits}
     lessons.append(new_lesson)
     return jsonify(lessons)
+
+@app.route('/delete/<lesson_id>', methods=["GET"])
+def delete_lesson(lesson_id):
+    for lesson in lessons:
+        if lesson["id"] == int(lesson_id):
+            lessons.remove(lesson)
+    return render_template("delete-success.html", lesson_id = lesson_id)
+
 
 if __name__ == "__main__":
     app.run()
